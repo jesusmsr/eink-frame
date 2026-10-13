@@ -1,0 +1,1673 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "E-Ink Frame",
+    "version": "dev"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Api Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login",
+        "operationId": "login_api_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logout",
+        "operationId": "logout_api_auth_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Me",
+        "operationId": "me_api_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "List Images",
+        "operationId": "list_images_api_images_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ImageOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Images Api Images Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Upload Image",
+        "operationId": "upload_image_api_images_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_image_api_images_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/preview": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Preview Image",
+        "description": "Procesa sin guardar y devuelve cómo se verá en el panel.",
+        "operationId": "preview_image_api_images_preview_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_preview_image_api_images_preview_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "image/png": {}
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/calibration": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Create Calibration",
+        "description": "Crea la carta de colores y la pone la primera en la cola.",
+        "operationId": "create_calibration_api_images_calibration_post",
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/{image_id}": {
+      "patch": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Patch Image",
+        "operationId": "patch_image_api_images__image_id__patch",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImagePatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Delete Image",
+        "operationId": "delete_image_api_images__image_id__delete",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/{image_id}/preview": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Get Preview",
+        "operationId": "get_preview_api_images__image_id__preview_get",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/{image_id}/thumb": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Get Thumb",
+        "operationId": "get_thumb_api_images__image_id__thumb_get",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/{image_id}/original": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Get Original",
+        "operationId": "get_original_api_images__image_id__original_get",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/queue": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Get Queue",
+        "operationId": "get_queue_api_queue_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "integer"
+                  },
+                  "type": "array",
+                  "title": "Response Get Queue Api Queue Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/{image_id}/show-next": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Show Next",
+        "operationId": "show_next_api_images__image_id__show_next_post",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "title": "Response Show Next Api Images  Image Id  Show Next Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/queue/{image_id}": {
+      "delete": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Unqueue",
+        "operationId": "unqueue_api_queue__image_id__delete",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Image Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "title": "Response Unqueue Api Queue  Image Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/images/reprocess": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Reprocess All",
+        "operationId": "reprocess_all_api_images_reprocess_post",
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Reprocess All Api Images Reprocess Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/settings": {
+      "get": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Read Settings",
+        "operationId": "read_settings_api_settings_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrameSettings"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Update Settings",
+        "operationId": "update_settings_api_settings_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FrameSettings"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrameSettings"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/settings/meta": {
+      "get": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Meta",
+        "operationId": "meta_api_settings_meta_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingsMeta"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/settings/reprocess": {
+      "get": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Reprocess Status",
+        "operationId": "reprocess_status_api_settings_reprocess_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReprocessStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/device/frame": {
+      "get": {
+        "tags": [
+          "device"
+        ],
+        "summary": "Frame",
+        "operationId": "frame_api_device_frame_get",
+        "parameters": [
+          {
+            "name": "bat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "mV medidos por el ESP32 (sin corregir)",
+              "title": "Bat"
+            },
+            "description": "mV medidos por el ESP32 (sin corregir)"
+          },
+          {
+            "name": "rssi",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rssi"
+            }
+          },
+          {
+            "name": "fw",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Fw"
+            }
+          },
+          {
+            "name": "awake",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "ms despierto en el ciclo anterior",
+              "title": "Awake"
+            },
+            "description": "ms despierto en el ciclo anterior"
+          },
+          {
+            "name": "wake",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Wake"
+            }
+          },
+          {
+            "name": "if-none-match",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-None-Match"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Imagen nativa 4bpp 800x480",
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "204": {
+            "description": "No hay imágenes"
+          },
+          "304": {
+            "description": "Sin cambios"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/device": {
+      "get": {
+        "tags": [
+          "device"
+        ],
+        "summary": "Device Status",
+        "operationId": "device_status_api_device_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceStatusOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/device/reports": {
+      "get": {
+        "tags": [
+          "device"
+        ],
+        "summary": "Reports",
+        "operationId": "reports_api_device_reports_get",
+        "parameters": [
+          {
+            "name": "hours",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 4320,
+              "minimum": 1,
+              "default": 168,
+              "title": "Hours"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReportOut"
+                  },
+                  "title": "Response Reports Api Device Reports Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/device/calibrate-battery": {
+      "post": {
+        "tags": [
+          "device"
+        ],
+        "summary": "Calibrate Battery",
+        "description": "Ajusta el factor del ADC con una lectura del multímetro tomada justo después\ndel último informe del marco.",
+        "operationId": "calibrate_battery_api_device_calibrate_battery_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalibrateBatteryIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatteryOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BatteryOut": {
+        "properties": {
+          "mv": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mv"
+          },
+          "percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percent"
+          },
+          "low": {
+            "type": "boolean",
+            "title": "Low"
+          },
+          "critical": {
+            "type": "boolean",
+            "title": "Critical"
+          },
+          "charging": {
+            "type": "boolean",
+            "title": "Charging"
+          },
+          "days_left": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Left"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mv",
+          "percent",
+          "low",
+          "critical",
+          "charging",
+          "days_left"
+        ],
+        "title": "BatteryOut"
+      },
+      "Body_preview_image_api_images_preview_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "crop": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crop"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_preview_image_api_images_preview_post"
+      },
+      "Body_upload_image_api_images_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "crop": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crop"
+          },
+          "show_next": {
+            "type": "boolean",
+            "title": "Show Next",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_image_api_images_post"
+      },
+      "CalibrateBatteryIn": {
+        "properties": {
+          "measured_mv": {
+            "type": "integer",
+            "title": "Measured Mv"
+          }
+        },
+        "type": "object",
+        "required": [
+          "measured_mv"
+        ],
+        "title": "CalibrateBatteryIn"
+      },
+      "DeviceStatusOut": {
+        "properties": {
+          "last_seen": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Seen"
+          },
+          "next_expected": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Expected"
+          },
+          "online": {
+            "type": "boolean",
+            "title": "Online"
+          },
+          "battery": {
+            "$ref": "#/components/schemas/BatteryOut"
+          },
+          "rssi": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rssi"
+          },
+          "fw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fw"
+          },
+          "awake_ms_avg": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Awake Ms Avg"
+          },
+          "current_image_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Image Id"
+          },
+          "current_since": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Since"
+          },
+          "next_change": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Change"
+          },
+          "reports_24h": {
+            "type": "integer",
+            "title": "Reports 24H"
+          },
+          "queue": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Queue"
+          }
+        },
+        "type": "object",
+        "required": [
+          "last_seen",
+          "next_expected",
+          "online",
+          "battery",
+          "rssi",
+          "fw",
+          "awake_ms_avg",
+          "current_image_id",
+          "current_since",
+          "next_change",
+          "reports_24h",
+          "queue"
+        ],
+        "title": "DeviceStatusOut"
+      },
+      "FrameSettings": {
+        "properties": {
+          "interval_minutes": {
+            "type": "integer",
+            "maximum": 1440.0,
+            "minimum": 5.0,
+            "title": "Interval Minutes",
+            "description": "Cuánto tiempo se muestra cada foto",
+            "default": 30
+          },
+          "check_minutes": {
+            "type": "integer",
+            "maximum": 1440.0,
+            "minimum": 5.0,
+            "title": "Check Minutes",
+            "description": "Cada cuánto despierta como máximo el marco para ver si hay algo en cola",
+            "default": 30
+          },
+          "order": {
+            "type": "string",
+            "enum": [
+              "shuffle",
+              "sequential",
+              "random"
+            ],
+            "title": "Order",
+            "default": "shuffle"
+          },
+          "quiet_enabled": {
+            "type": "boolean",
+            "title": "Quiet Enabled",
+            "default": true
+          },
+          "quiet_start": {
+            "type": "string",
+            "title": "Quiet Start",
+            "default": "00:00"
+          },
+          "quiet_end": {
+            "type": "string",
+            "title": "Quiet End",
+            "default": "07:00"
+          },
+          "rotation": {
+            "type": "integer",
+            "maximum": 3.0,
+            "minimum": 0.0,
+            "title": "Rotation",
+            "description": "Igual que setRotation() de GxEPD2. 3 = vertical",
+            "default": 3
+          },
+          "saturation": {
+            "type": "number",
+            "maximum": 3.0,
+            "minimum": 0.0,
+            "title": "Saturation",
+            "default": 1.25
+          },
+          "contrast": {
+            "type": "number",
+            "maximum": 3.0,
+            "minimum": 0.0,
+            "title": "Contrast",
+            "default": 1.05
+          },
+          "brightness": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.2,
+            "title": "Brightness",
+            "default": 1.0
+          },
+          "dither": {
+            "type": "string",
+            "enum": [
+              "floyd_steinberg",
+              "none"
+            ],
+            "title": "Dither",
+            "default": "floyd_steinberg"
+          },
+          "palette": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Palette",
+            "default": [
+              "#1c1a1f",
+              "#e6e6dc",
+              "#2e6e42",
+              "#2f3a8c",
+              "#b02a2a",
+              "#e8d23a",
+              "#d46a2c"
+            ]
+          },
+          "battery_factor": {
+            "type": "number",
+            "maximum": 1.5,
+            "minimum": 0.5,
+            "title": "Battery Factor",
+            "description": "Corrección de la lectura del ADC",
+            "default": 1.0
+          },
+          "battery_low_mv": {
+            "type": "integer",
+            "maximum": 4000.0,
+            "minimum": 3000.0,
+            "title": "Battery Low Mv",
+            "default": 3500
+          },
+          "battery_critical_mv": {
+            "type": "integer",
+            "maximum": 3800.0,
+            "minimum": 3000.0,
+            "title": "Battery Critical Mv",
+            "default": 3300
+          },
+          "low_battery_interval_factor": {
+            "type": "number",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Low Battery Interval Factor",
+            "default": 2.0
+          }
+        },
+        "type": "object",
+        "title": "FrameSettings"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ImageOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "original_name": {
+            "type": "string",
+            "title": "Original Name"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "processed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Processed At"
+          },
+          "last_shown_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Shown At"
+          },
+          "show_count": {
+            "type": "integer",
+            "title": "Show Count"
+          },
+          "etag": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Etag"
+          },
+          "is_current": {
+            "type": "boolean",
+            "title": "Is Current"
+          },
+          "queued": {
+            "type": "boolean",
+            "title": "Queued"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "original_name",
+          "enabled",
+          "created_at",
+          "processed_at",
+          "last_shown_at",
+          "show_count",
+          "etag",
+          "is_current",
+          "queued"
+        ],
+        "title": "ImageOut"
+      },
+      "ImagePatch": {
+        "properties": {
+          "enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enabled"
+          }
+        },
+        "type": "object",
+        "title": "ImagePatch"
+      },
+      "LoginIn": {
+        "properties": {
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "password"
+        ],
+        "title": "LoginIn"
+      },
+      "MeOut": {
+        "properties": {
+          "authenticated": {
+            "type": "boolean",
+            "title": "Authenticated"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "authenticated",
+          "version"
+        ],
+        "title": "MeOut"
+      },
+      "ReportOut": {
+        "properties": {
+          "ts": {
+            "type": "string",
+            "title": "Ts"
+          },
+          "battery_mv": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Battery Mv"
+          },
+          "battery_raw_mv": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Battery Raw Mv"
+          },
+          "percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percent"
+          },
+          "rssi": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rssi"
+          },
+          "awake_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Awake Ms"
+          },
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "sleep_s": {
+            "type": "integer",
+            "title": "Sleep S"
+          },
+          "image_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Id"
+          },
+          "wake_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wake Reason"
+          },
+          "fw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fw"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ts",
+          "battery_mv",
+          "battery_raw_mv",
+          "percent",
+          "rssi",
+          "awake_ms",
+          "status",
+          "sleep_s",
+          "image_id",
+          "wake_reason",
+          "fw"
+        ],
+        "title": "ReportOut"
+      },
+      "ReprocessStatus": {
+        "properties": {
+          "running": {
+            "type": "boolean",
+            "title": "Running"
+          },
+          "done": {
+            "type": "integer",
+            "title": "Done"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "errors": {
+            "type": "integer",
+            "title": "Errors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "running",
+          "done",
+          "total",
+          "errors"
+        ],
+        "title": "ReprocessStatus"
+      },
+      "SettingsMeta": {
+        "properties": {
+          "palette_names": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Palette Names"
+          },
+          "palette_default": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Palette Default"
+          },
+          "palette_ideal": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Palette Ideal"
+          },
+          "defaults": {
+            "$ref": "#/components/schemas/FrameSettings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "palette_names",
+          "palette_default",
+          "palette_ideal",
+          "defaults"
+        ],
+        "title": "SettingsMeta"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

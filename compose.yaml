@@ -1,0 +1,21 @@
+# Pegar en Dockge (Compose) y rellenar el .env (ver .env.example).
+services:
+  eink-frame:
+    image: jesussr/eink-frame:latest
+    container_name: eink-frame
+    restart: unless-stopped
+    ports:
+      - "8080:8000"     # el ESP32 llama a http://<IP-del-NAS>:8080
+    environment:
+      TZ: Europe/Madrid
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Define ADMIN_PASSWORD}
+      DEVICE_TOKEN: ${DEVICE_TOKEN:?Define DEVICE_TOKEN}
+      # true si SOLO accedes al panel por HTTPS (Cloudflare). Si también entras por
+      # http://IP:8080 desde casa, déjalo en false o no podrás iniciar sesión por IP.
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      # Usuario con el que corre el servidor y dueño de ./data (568 = "apps" en TrueNAS SCALE)
+      PUID: 568
+      PGID: 568
+      # SECRET_KEY es opcional: si no se define se genera una y se guarda en /data
+    volumes:
+      - ./data:/data

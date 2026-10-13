@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/__pycache__
+**/.pytest_cache
+**/*.pyc
+server/data
+server/tests
+firmware
+.git
+.github
+*.md
+!README.md
+.env

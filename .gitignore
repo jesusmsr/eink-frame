@@ -1,0 +1,24 @@
+# Secretos
+.env
+firmware/include/config.h
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+server/data/
+
+# Node
+node_modules/
+web/dist/
+
+# PlatformIO
+firmware/.pio/
+firmware/.vscode/
+
+# SO / editores
+.DS_Store
+Thumbs.db
+.idea/
